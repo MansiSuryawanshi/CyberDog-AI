@@ -108,10 +108,11 @@ ipcMain.on('window-move', (event, { x, y }) => {
   }
 });
 
-// IPC Handler to decrypt and return the model
+// IPC Handler to decrypt and write a temporary model file
 ipcMain.handle('get-decrypted-model', async () => {
   try {
     const modelPath = path.join(__dirname, 'src', 'models', 'cyberdog.glb.enc');
+    const tempPath = path.join(__dirname, 'src', 'models', 'cyberdog_temp.glb');
     const encryptedData = fs.readFileSync(modelPath);
 
     // Extraction: first 16 bytes are IV
@@ -125,7 +126,10 @@ ipcMain.handle('get-decrypted-model', async () => {
     let decrypted = decipher.update(encryptedBuffer);
     decrypted = Buffer.concat([decrypted, decipher.final()]);
 
-    return decrypted.buffer.slice(decrypted.byteOffset, decrypted.byteOffset + decrypted.byteLength);
+    fs.writeFileSync(tempPath, decrypted);
+
+    // Return the relative URL path for the frontend to load
+    return '/src/models/cyberdog_temp.glb';
   } catch (err) {
     console.error('Decryption failed:', err);
     throw err;
