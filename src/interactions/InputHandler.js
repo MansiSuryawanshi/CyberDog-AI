@@ -1,14 +1,45 @@
 import * as THREE from 'three';
 
 export function setupInput(container, state) {
-  let isDragging = false;
+  let isDraggingWindow = false;
+  let isResizingWindow = false;
   let previousMousePosition = { x: 0, y: 0 };
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
+  const resizeHandle = document.getElementById('resize-handle');
+
+  // Handle Resizing
+  if (resizeHandle) {
+    resizeHandle.addEventListener('pointerdown', (e) => {
+      isResizingWindow = true;
+      previousMousePosition = { x: e.screenX, y: e.screenY };
+      e.stopPropagation(); // prevent window drag
+      resizeHandle.setPointerCapture(e.pointerId);
+    });
+
+    resizeHandle.addEventListener('pointerup', (e) => {
+      isResizingWindow = false;
+      resizeHandle.releasePointerCapture(e.pointerId);
+    });
+
+    resizeHandle.addEventListener('pointermove', (e) => {
+      if (isResizingWindow) {
+        const deltaX = e.screenX - previousMousePosition.x;
+        const deltaY = e.screenY - previousMousePosition.y;
+        
+        if (window.electronAPI) {
+          window.electronAPI.resizeWindow({ width: deltaX, height: deltaY });
+        }
+
+        previousMousePosition = { x: e.screenX, y: e.screenY };
+      }
+    });
+  }
+
   // Handle Dragging
   container.addEventListener('pointerdown', (e) => {
-    isDragging = true;
+    isDraggingWindow = true;
     previousMousePosition = { x: e.screenX, y: e.screenY };
     container.style.cursor = 'grabbing';
     container.setPointerCapture(e.pointerId);
@@ -16,7 +47,7 @@ export function setupInput(container, state) {
 
   container.addEventListener('pointermove', (e) => {
     // 1. Handle Dragging Window
-    if (isDragging) {
+    if (isDraggingWindow) {
       const deltaX = e.screenX - previousMousePosition.x;
       const deltaY = e.screenY - previousMousePosition.y;
       
@@ -45,7 +76,7 @@ export function setupInput(container, state) {
   });
 
   container.addEventListener('pointerup', (e) => {
-    isDragging = false;
+    isDraggingWindow = false;
     container.style.cursor = 'grab';
     container.releasePointerCapture(e.pointerId);
   });
