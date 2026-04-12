@@ -24,35 +24,48 @@ body, html {
   cursor: grabbing;
 }
 
-/* Speech Bubble Styles */
+/* Speech Bubble — floats above robot head, right side */
 #speech-container {
   position: absolute;
-  top: 15%;
-  right: 15%;
-  max-width: 250px;
+  bottom: 65%;
+  right: 10px;
+  left: auto;
+  max-width: 240px;
   pointer-events: none;
   z-index: 10;
 }
 
 #speech-bubble {
+  position: relative;
   background: var(--base-light);
-  border: 2px solid var(--cute-blue);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  padding: 12px 18px;
-  border-radius: 16px 16px 16px 2px;
-  color: #333;
-  font-size: 14px;
+  border: 2.5px solid var(--cute-blue);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+  padding: 14px 36px 14px 16px;
+  border-radius: 24px;
+  color: #222;
+  font-size: 13px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.5;
   opacity: 0;
   transform: translateY(10px) scale(0.95);
   transform-origin: bottom left;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+  /* Cover bottom border of bumps where they meet the body */
+  z-index: 2;
+}
+
+/* No decorations */
+#speech-bubble::before,
+#speech-bubble::after {
+  content: none;
+  display: none;
 }
 
 #speech-bubble.visible {
   opacity: 1;
   transform: translateY(0) scale(1);
+  pointer-events: all;
 }
 
 #speech-bubble.hidden {
@@ -61,16 +74,46 @@ body, html {
   pointer-events: none;
 }
 
-/* Add a cute little corner accent */
-#speech-bubble::before {
-  content: '';
+/* Danger — red tint */
+#speech-bubble.danger {
+  border-color: #e74c3c;
+  background: #fff5f5;
+  color: #c0392b;
+}
+
+#speech-bubble.danger::before,
+#speech-bubble.danger::after {
+  border-color: #e74c3c;
+  background: #fff5f5;
+}
+
+/* X close button */
+#speech-close {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 6px;
-  height: 6px;
-  background: var(--cute-blue);
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid #ccc;
+  background: #fff;
   border-radius: 50%;
+  font-size: 11px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  line-height: 1;
+  padding: 0;
+  transition: background 0.2s, color 0.2s;
+}
+
+#speech-close:hover {
+  background: #e74c3c;
+  border-color: #e74c3c;
+  color: #fff;
 }
 
 /* Resize Handle Styles */
