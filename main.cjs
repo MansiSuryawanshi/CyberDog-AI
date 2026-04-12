@@ -24,7 +24,7 @@ function createWindow() {
     alwaysOnTop: true,
     hasShadow: false,
     skipTaskbar: true,
-    resizable: false, // Prevent resizing for widget consistency
+    resizable: true, // Allow resizing at runtime
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
@@ -104,7 +104,18 @@ app.whenReady().then(() => {
 ipcMain.on('window-move', (event, { x, y }) => {
   if (mainWindow) {
     const pos = mainWindow.getPosition();
-    mainWindow.setPosition(pos[0] + x, pos[1] + y);
+    mainWindow.setPosition(Math.round(pos[0] + x), Math.round(pos[1] + y));
+  }
+});
+
+// IPC Handler for resizing the window
+ipcMain.on('window-resize', (event, { width, height }) => {
+  if (mainWindow) {
+    const size = mainWindow.getSize();
+    // Enforce a minimum size
+    const newWidth = Math.max(200, Math.round(size[0] + width));
+    const newHeight = Math.max(200, Math.round(size[1] + height));
+    mainWindow.setSize(newWidth, newHeight);
   }
 });
 

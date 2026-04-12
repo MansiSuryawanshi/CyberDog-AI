@@ -72,3 +72,17 @@ body, html {
   background: var(--cute-blue);
   border-radius: 50%;
 }
+
+/* Resize Handle Styles */
+#resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: nwse-resize;
+  z-index: 100;
+  /* Subtle visual indicator */
+  background: radial-gradient(circle at 100% 100%, rgba(52, 152, 219, 0.8) 20%, transparent 60%);
+}
+
