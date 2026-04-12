@@ -1,0 +1,74 @@
+:root {
+  --cute-blue: #3498db;
+  --base-light: rgba(255, 255, 255, 0.95);
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: transparent !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  user-select: none;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+#app:active {
+  cursor: grabbing;
+}
+
+/* Speech Bubble Styles */
+#speech-container {
+  position: absolute;
+  top: 15%;
+  right: 15%;
+  max-width: 250px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#speech-bubble {
+  background: var(--base-light);
+  border: 2px solid var(--cute-blue);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 12px 18px;
+  border-radius: 16px 16px 16px 2px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transform-origin: bottom left;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#speech-bubble.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#speech-bubble.hidden {
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  pointer-events: none;
+}
+
+/* Add a cute little corner accent */
+#speech-bubble::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  background: var(--cute-blue);
+  border-radius: 50%;
+}
