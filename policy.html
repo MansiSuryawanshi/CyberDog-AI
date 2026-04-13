@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberDog AI | Enterprise Governance Handbook</title>
+    <link rel="stylesheet" href="./policy.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            main: '#05060a',
+                            accent: '#3b82f6',
+                            glass: 'rgba(255, 255, 255, 0.03)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-main text-slate-300 antialiased selection:bg-blue-500/30 selection:text-white">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <!-- ── NAVIGATION ── -->
+    <header class="fixed top-0 inset-x-0 z-50 bg-brand-main/80 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-xl shadow-lg relative overflow-hidden">
+                    🐕
+                    <div class="absolute inset-0 bg-white/20 mix-blend-overlay"></div>
+                </div>
+                <span class="text-xl font-black tracking-tight text-white">CyberDog <span class="text-blue-500 font-light italic">Handbook</span></span>
+            </div>
+            <div class="flex items-center gap-6">
+                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 px-3 py-1 border border-white/10 rounded">INTERNAL ONLY</span>
+                <button class="px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-all flex items-center gap-2 text-sm font-bold">
+                    <i data-lucide="download" class="w-4 h-4"></i> Export PDF
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── HERO ── -->
+    <section class="max-w-7xl mx-auto px-6 pt-48 pb-32">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="animate-in">
+                <div class="badge-pill mb-8"><i data-lucide="scale" class="w-3 h-3"></i> Governance v2026.04</div>
+                <h1 class="text-6xl lg:text-8xl font-black text-white leading-[0.9] mb-8 tracking-tighter">
+                    Enterprise <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 italic">Governance</span>
+                </h1>
+                <p class="text-xl text-slate-400 leading-relaxed mb-12 max-w-lg">
+                    This handbook outlines the mandatory security protocols, privacy standards, and acceptable use policies for all personnel interacting with the CyberDog AI Ecosystem.
+                </p>
+                
+                <div class="grid grid-cols-3 gap-6 pt-10 border-t border-white/10">
+                    <div><p class="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-1">Last Review</p><p class="text-xs font-bold text-white">April 12, 2026</p></div>
+                    <div><p class="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-1">Status</p><p class="text-xs font-bold text-green-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> ACTIVE</p></div>
+                    <div><p class="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-1">Version</p><p class="text-xs font-bold text-white">v4.2.1-Final</p></div>
+                </div>
+            </div>
+
+            <div class="hidden lg:block animate-in" style="animation-delay: 0.2s">
+                <div class="relative w-full aspect-video rounded-3xl premium-glass overflow-hidden flex items-center justify-center group shadow-2xl">
+                    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+                    <div class="relative z-10 p-12 text-center">
+                        <div class="w-20 h-20 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-blue-500/30">
+                            <i data-lucide="info" class="w-10 h-10 text-blue-500"></i>
+                        </div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-widest mb-2">Notice of Compliance</h4>
+                        <p class="text-xs text-slate-400">All interactions are logged and audited in accordance with the policies detailed below.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="max-w-7xl mx-auto px-6 pb-48">
+        <div class="grid lg:grid-cols-[300px_1fr] gap-20">
+            <!-- Long Sidebar -->
+            <aside class="hidden lg:block relative">
+                <div class="sticky top-32 max-h-[70vh] overflow-y-auto pr-4 custom-scrollbar" id="sidebar-nav">
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 pl-4 font-mono">01 Privacy & Metrics</h3>
+                            <div class="space-y-1">
+                                <a href="#privacy-core" class="nav-link active" data-section="privacy-core"><i data-lucide="shield" class="w-4 h-4"></i> Core Privacy</a>
+                                <a href="#privacy-telemetry" class="nav-link" data-section="privacy-telemetry"><i data-lucide="bar-chart-3" class="w-4 h-4"></i> Telemetry Logic</a>
+                                <a href="#privacy-user" class="nav-link" data-section="privacy-user"><i data-lucide="user-check" class="w-4 h-4"></i> User Rights</a>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 pl-4 font-mono">02 Ops Security</h3>
+                            <div class="space-y-1">
+                                <a href="#sec-auth" class="nav-link" data-section="sec-auth"><i data-lucide="key" class="w-4 h-4"></i> Authentication</a>
+                                <a href="#sec-encryption" class="nav-link" data-section="sec-encryption"><i data-lucide="lock" class="w-4 h-4"></i> Encryption Std</a>
+                                <a href="#sec-perimeter" class="nav-link" data-section="sec-perimeter"><i data-lucide="shield-alert" class="w-4 h-4"></i> Perimeter</a>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 pl-4 font-mono">03 Data Guardian</h3>
+                            <div class="space-y-1">
+                                <a href="#guard-clipboard" class="nav-link" data-section="guard-clipboard"><i data-lucide="clipboard-copy" class="w-4 h-4"></i> Clipboard Guard</a>
+                                <a href="#guard-email" class="nav-link" data-section="guard-email"><i data-lucide="mail" class="w-4 h-4"></i> Email Defender</a>
+                                <a href="#guard-dlp" class="nav-link" data-section="guard-dlp"><i data-lucide="save" class="w-4 h-4"></i> Retention/TPD</a>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 pl-4 font-mono">04 AI Ethics</h3>
+                            <div class="space-y-1">
+                                <a href="#ai-explain" class="nav-link" data-section="ai-explain"><i data-lucide="brain" class="w-4 h-4"></i> Explainability</a>
+                                <a href="#ai-bias" class="nav-link" data-section="ai-bias"><i data-lucide="binary" class="w-4 h-4"></i> Bias Mitigation</a>
+                                <a href="#ai-human" class="nav-link" data-section="ai-human"><i data-lucide="eye" class="w-4 h-4"></i> Human-In-Loop</a>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 pl-4 font-mono">05 Legal Base</h3>
+                            <div class="space-y-1">
+                                <a href="#aup-usage" class="nav-link" data-section="aup-usage"><i data-lucide="slash" class="w-4 h-4"></i> Acceptable Use</a>
+                                <a href="#legal-liab" class="nav-link" data-section="legal-liab"><i data-lucide="gavel" class="w-4 h-4"></i> Liabilities</a>
+                                <a href="#legal-dispute" class="nav-link" data-section="legal-dispute"><i data-lucide="message-square" class="w-4 h-4"></i> Dispute Res</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Doc Sections -->
+            <div class="space-y-48">
+                <!-- 01. PRIVACY & METRICS -->
+                <div class="space-y-32">
+                    <section id="privacy-core" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400"><i data-lucide="shield" class="w-7 h-7"></i></div>
+                            <div><h2 class="text-4xl font-black text-white italic">1.0 Core Privacy Framework</h2><p class="text-xs text-slate-500 uppercase font-mono mt-1">Classification: PUBLIC/GOV</p></div>
+                        </div>
+                        <ul class="clause-list prose prose-invert max-w-none">
+                            <li class="clause-item">
+                                <strong>Data Minimization Principle</strong>: We only collect the biological minimum of metadata required to sustain the CyberDog's procedural personality and security alert logic.
+                                <ul class="sub-clause-list">
+                                    <li class="sub-clause-item">All PII (Personally Identifiable Information) is hashed using SHA3-512 before reaching any persistent storage.</li>
+                                    <li class="sub-clause-item">Screen recording frames are processed in volatile RAM and never written to disk without explicit 'Incident Trigger' activation.</li>
+                                </ul>
+                            </li>
+                            <li class="clause-item">
+                                <strong>Contextual Integrity</strong>: User activity captured by the Sentinel Agent is strictly segregated from external ML training pools.
+                            </li>
+                            <li class="clause-item">
+                                <strong>Anonymization Standards</strong>: Any data transferred for technical support (logs) must undergo an automated Scrubbing Engine pass to remove variable strings matching credit card or social security patterns.
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section id="privacy-telemetry" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400"><i data-lucide="bar-chart-3" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">1.1 Telemetry Isolation Logic</h2>
+                        </div>
+                        <p class="mb-8 p-6 rounded-2xl bg-white/[0.02] border border-white/5 text-sm italic">"Telemetry is the heartbeat of security, but isolation is the shield of privacy."</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="spec-card">
+                                <h4>Local-Only Processing</h4>
+                                <p class="text-xs leading-relaxed">Neural analysis of clipboard and input events occurs 100% locally on the host machine. No outbound transmission of raw keystrokes is permitted under Article 4.2.1. This ensures that even in the case of a network breach, your raw inputs remain on-device.</p>
+                            </div>
+                            <div class="spec-card">
+                                <h4>Gradient Privacy Filters</h4>
+                                <p class="text-xs leading-relaxed">For AI feedback loops, we utilize Differential Privacy (ε=0.1) to ensure no single user's activity can be reconstructed from aggregated metrics. This mathematical guarantee prevents de-anonymization attacks.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 02. OPS SECURITY -->
+                <div class="space-y-32">
+                    <section id="sec-auth" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500"><i data-lucide="key" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">2.0 Multi-Factor Authentication Std</h2>
+                        </div>
+                        <div class="prose prose-invert max-w-none">
+                            <p>To access the CyberDog Administrative Dashboard, the following <strong>Three-Tier Auth Protocol</strong> is mandatory:</p>
+                            <div class="my-10 space-y-4">
+                                <div class="flex items-center gap-6 p-6 rounded-3xl bg-white/[0.02] border border-white/10 group hover:border-amber-500/40 transition-all">
+                                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 font-black">01</div>
+                                    <div class="flex-1 text-sm font-bold">Biometric or Hardware-Backed Token (FIDO2)</div>
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+                                </div>
+                                <div class="flex items-center gap-6 p-6 rounded-3xl bg-white/[0.02] border border-white/10 group hover:border-amber-500/40 transition-all">
+                                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 font-black">02</div>
+                                    <div class="flex-1 text-sm font-bold">Time-based One Time Password (TOTP)</div>
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+                                </div>
+                                <div class="flex items-center gap-6 p-6 rounded-3xl bg-white/[0.02] border border-white/10 group hover:border-amber-500/40 transition-all">
+                                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 font-black">03</div>
+                                    <div class="flex-1 text-sm font-bold">Adaptive IP/Geographic Fencing Check</div>
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="sec-encryption" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400"><i data-lucide="lock" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">2.1 Cryptographic Suite v4.0</h2>
+                        </div>
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead><tr class="text-slate-500 border-b border-white/10"><th class="pb-4 font-black tracking-widest uppercase">DOMAIN</th><th class="pb-4 font-black tracking-widest uppercase">STANDARD</th><th class="pb-4 font-black tracking-widest uppercase">KEY STRENGTH</th></tr></thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-white/5"><td class="py-4 font-mono">Data at Rest</td><td class="py-4">AES-256-GCM</td><td class="py-4">256-bit S-Box</td></tr>
+                                <tr class="border-b border-white/5"><td class="py-4 font-mono">Data in Transit</td><td class="py-4">TLS 1.3 w/ mTLS</td><td class="py-4">ECDHE-RSA-4096</td></tr>
+                                <tr class="border-b border-white/5"><td class="py-4 font-mono">Secret Storage</td><td class="py-4">HashiCorp Vault / KMS</td><td class="py-4">Hardware Protected</td></tr>
+                                <tr class="border-b border-white/5"><td class="py-4 font-mono">Email Payload</td><td class="py-4">S/MIME v4.0</td><td class="py-4">RSA-4096 / AES-256</td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section id="sec-perimeter" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400"><i data-lucide="shield-alert" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">2.2 Perimeter & Port Security</h2>
+                        </div>
+                        <ul class="clause-list prose prose-invert max-w-none">
+                            <li class="clause-item"><strong>Zero-Trust Architecture</strong>: Every request to internal resources is authenticated, authorized, and encrypted. We do not trust the internal network.</li>
+                            <li class="clause-item"><strong>Port Shadowing</strong>: Internal ports are hidden from standard scans and require specific cryptographic "knocks" to become visible to authorized clients.</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <!-- 03. DATA GUARDIAN -->
+                <div class="space-y-32">
+                    <section id="guard-clipboard" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500"><i data-lucide="clipboard-copy" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">3.0 Clipboard Security Matrix</h2>
+                        </div>
+                        <div class="grid gap-4">
+                            <div class="p-8 rounded-3xl bg-white/[0.01] border border-white/5 space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-white font-black text-lg">Credential Scrubbing Protocol</h4>
+                                    <span class="px-2 py-1 rounded bg-red-500/20 text-red-500 text-[9px] font-black uppercase tracking-widest">ENFORCED</span>
+                                </div>
+                                <p class="text-sm">Detection engine triggers when patterns matching <strong>API Keys, PGP Keys, or Session Cookies</strong> are identified in the system clipboard. Action: Immediate Scrub + Incident Log Created.</p>
+                            </div>
+                            <div class="p-8 rounded-3xl bg-white/[0.01] border border-white/5 space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-white font-black text-lg">Cross-Domain Leaks</h4>
+                                    <span class="px-2 py-1 rounded bg-blue-500/20 text-blue-500 text-[9px] font-black uppercase tracking-widest">MONITORED</span>
+                                </div>
+                                <p class="text-sm">Warns when copying technical roadmaps or internal IP addresses from the Company VPN environment to unverified browsers or chat applications. This prevents accidental "Shadow IT" data migration.</p>
+                            </div>
+                            <div class="p-8 rounded-3xl bg-white/[0.01] border border-white/5 space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-white font-black text-lg">Financial & PII Protection</h4>
+                                    <span class="px-2 py-1 rounded bg-amber-500/20 text-amber-500 text-[9px] font-black uppercase tracking-widest">CRITICAL BLOCK</span>
+                                </div>
+                                <p class="text-sm">Blocks copying of spreadsheets containing more than 5 rows of PII (Names, CC, Address) to any non-approved enterprise document editor.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="guard-email" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400"><i data-lucide="mail-warning" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">3.1 Email Defender Policies</h2>
+                        </div>
+                        <div class="space-y-12">
+                            <div class="prose prose-invert">
+                                <h3 class="text-white font-bold text-2xl mb-6">Whitelisting & Domain Analysis</h3>
+                                <p>Outbound email traffic is subject to the following validation logic:</p>
+                                <ul class="clause-list">
+                                    <li class="clause-item"><strong>Domain Match Analysis</strong>: Checks for look-alike domains (e.g., google.com vs g00gle.com) and alerts on homograph attacks.</li>
+                                    <li class="clause-item"><strong>Attachments Sandbox</strong>: All macro-enabled files are passed through a 10s headless detonation check in an isolated cloud container.</li>
+                                    <li class="clause-item"><strong>External Recipient Warning</strong>: A visible banner is injected into the drafting UI when at least one recipient is outside of the @cyberdog.ai domain hierarchy.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 04. AI ETHICS -->
+                <div class="space-y-32">
+                    <section id="ai-explain" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400"><i data-lucide="brain" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">4.0 AI Explainability Standards</h2>
+                        </div>
+                        <div class="prose prose-invert max-w-none">
+                            <p class="text-lg leading-relaxed text-slate-400">CyberDog AI's detection models must maintain <strong>Interpretability Score > 0.8</strong>. We reject "Black Box" detection patterns for high-severity violations. Every automated decision must provide a "Reason Code" that can be verified by a human auditor.</p>
+                            <div class="grid md:grid-cols-2 gap-10 mt-10">
+                                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                    <h5 class="text-white font-bold mb-4">LIME/SHAP Integration</h5>
+                                    <p class="text-xs">We use SHAP (SHapley Additive exPlanations) to attribute detection weight to specific user actions, ensuring fairness and preventing bias in automated flagging.</p>
+                                </div>
+                                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                    <h5 class="text-white font-bold mb-4">Bias Auditing</h5>
+                                    <p class="text-xs">Quarterly audits are performed to ensure our detection models do not exhibit demographic bias across the global organizational footprint.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="ai-human" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400"><i data-lucide="eye" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">4.1 Human-In-Loop Enforcement</h2>
+                        </div>
+                        <div class="p-10 rounded-3xl bg-pink-600/5 border border-pink-500/10 relative overflow-hidden">
+                            <h4 class="text-white font-bold mb-4 uppercase tracking-widest text-xs">MANDATORY PROTOCOL</h4>
+                            <p class="text-slate-300">Any disciplinary action resulting from AI-detected violations <strong>requires manual sign-off</strong> by a Senior Security Officer. No autonomous terminations are permitted under Sentinel Governance v4. The AI proposes, the human disposes.</p>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 05. LEGAL & AUP -->
+                <div class="space-y-32">
+                    <section id="aup-usage" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-slate-500/10 border border-slate-500/20 flex items-center justify-center text-slate-400"><i data-lucide="slash" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">5.0 Acceptable Use Policy (AUP)</h2>
+                        </div>
+                        <div class="prose prose-invert max-w-none">
+                            <p>All personnel must adhere to the following usage standards. Violation of these standards results in immediate lockout.</p>
+                            <ul class="clause-list">
+                                <li class="clause-item"><strong>Prohibited Activities</strong>:
+                                    <ul class="sub-clause-list">
+                                        <li class="sub-clause-item">Attempting to reverse engineer the Sentinel Agent binary.</li>
+                                        <li class="sub-clause-item">Using company AI resources to generate malicious code or phishing content.</li>
+                                        <li class="sub-clause-item">Sharing of unredacted internal dashboard screenshots to social platforms.</li>
+                                        <li class="sub-clause-item">Bypassing internal MFA via session hijacking or social engineering.</li>
+                                    </ul>
+                                </li>
+                                <li class="clause-item"><strong>Asset Care</strong>: Physical hardware provided by CyberDog AI must remain encrypted and never left unattended in public transit environments.</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section id="legal-liab" class="animate-in">
+                        <div class="flex items-center gap-5 mb-10">
+                            <div class="w-14 h-14 rounded-2xl bg-slate-500/10 border border-slate-500/20 flex items-center justify-center text-slate-400"><i data-lucide="gavel" class="w-7 h-7"></i></div>
+                            <h2 class="text-4xl font-black text-white italic">5.1 Limitation of Liability</h2>
+                        </div>
+                        <div class="prose prose-invert max-w-none text-slate-500 text-sm italic space-y-6">
+                            <p>CYBERDOG AI INC. SHALL NOT BE HELD RESPONSIBLE FOR INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES RESULTING FROM THE DEPLOYMENT OF THE SENTINEL AGENT ON UNVERIFIED OPERATING SYSTEMS. THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED.</p>
+                            <p>USER ACKNOWLEDGES THAT WHILE DETECTION ACCURACY TARGETS 99.9%, HEURISTIC MODELS ARE SUBJECT TO FALSE POSITIVES IN NOISY ENVIRONMENTS. FINAL DETERMINATION OF COMPLIANCE BREACHES IS AT THE SOLE DISCRETION OF THE CYBERDOG ADJUDICATION BOARD.</p>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/5 py-32 bg-black/40 relative">
+        <div class="glow-orb orb-2 opacity-5"></div>
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-16">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-8 h-8 rounded bg-blue-600 flex items-center justify-center text-white">🐕</div>
+                    <span class="font-black text-white uppercase tracking-tighter">CyberDog AI Governance</span>
+                </div>
+                <p class="text-slate-500 text-sm max-w-sm leading-relaxed mb-8">This portal is a living document. Updates are pushed to all Sentinel Agents in real-time. Failure to comply with the handbook is grounds for immediate credential revocation.</p>
+                <div class="flex gap-4 text-slate-500">
+                    <i data-lucide="twitter" class="w-4 h-4 hover:text-white cursor-pointer transition-colors"></i>
+                    <i data-lucide="github" class="w-4 h-4 hover:text-white cursor-pointer transition-colors"></i>
+                    <i data-lucide="linkedin" class="w-4 h-4 hover:text-white cursor-pointer transition-colors"></i>
+                </div>
+            </div>
+            <div>
+                <h5 class="text-[10px] font-black uppercase text-white mb-6 tracking-widest">Resources</h5>
+                <ul class="text-slate-600 text-xs space-y-3 font-bold uppercase tracking-widest">
+                    <li class="hover:text-blue-400 cursor-pointer">SOC Audits</li>
+                    <li class="hover:text-blue-400 cursor-pointer">Transparency</li>
+                    <li class="hover:text-blue-400 cursor-pointer">API Keys</li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-[10px] font-black uppercase text-white mb-6 tracking-widest">Support</h5>
+                <ul class="text-slate-600 text-xs space-y-3 font-bold uppercase tracking-widest">
+                    <li class="hover:text-blue-400 cursor-pointer">Contact Security</li>
+                    <li class="hover:text-blue-400 cursor-pointer">Report Bug</li>
+                    <li class="hover:text-blue-400 cursor-pointer">SLA Agreement</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 mt-20 pt-10 border-t border-white/5 flex justify-between items-center text-[9px] font-black uppercase tracking-[0.4em] text-slate-700">
+            <span>© 2026 CyberDog AI Inc. All Rights Reserved.</span>
+            <span class="text-blue-900">CLASSIFIED: OFFICIAL USE ONLY</span>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Scroll Progress
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            const bar = document.getElementById("progress-bar");
+            if(bar) bar.style.width = scrolled + "%";
+        };
+
+        // Scroll Spy
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

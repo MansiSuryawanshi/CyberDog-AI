@@ -9,6 +9,7 @@ import emailDefenderRouter from './routes/emailDefender';
 import copyPasteGuardRouter from './routes/copyPasteGuard';
 import monitorRouter from './routes/monitor';
 import { addSSEClient, getClientCount } from './sse/stream';
+import { generateAssistantResponse, ChatMessage } from './services/policyAssistantService';
 
 dotenv.config();
 
@@ -35,14 +36,49 @@ app.get('/api/stream', (req, res) => {
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
+    version: '2.0.0-CLAUDE-SYNC',
     service: 'PolicyGuard AI Backend',
     sseClients: getClientCount(),
     timestamp: new Date().toISOString(),
   });
 });
 
+// ─── Policy Assistant Chat ───────────────────────────────────────────────────
+let conversationHistory: ChatMessage[] = [];
+
+app.post('/api/policy/chat', async (req, res) => {
+  const { message } = req.body;
+  
+  if (!message) {
+    return res.status(400).json({ error: 'Message is required' });
+  }
+
+  console.log('🤖 Policy Assistant — Incoming message:', message);
+
+  try {
+    const response = await generateAssistantResponse(message, conversationHistory);
+    
+    console.log('📊 Policy Assistant — Detected topic:', (response as any).topic);
+    console.log('📝 Policy Assistant — Response type:', (response as any).type);
+
+    // Update history
+    conversationHistory.push({ role: 'user', message });
+    conversationHistory.push({ role: 'ai', message: (response as any).text });
+
+    // Keep history manageable
+    if (conversationHistory.length > 20) {
+      conversationHistory = conversationHistory.slice(-20);
+    }
+
+    res.json(response);
+  } catch (error) {
+    console.error('❌ Policy Assistant — Error:', error);
+    res.status(500).json({ error: 'Failed to generate response' });
+  }
+});
+
 app.listen(PORT, () => {
-  console.log('PolicyGuard AI backend running on http://localhost:' + PORT);
-  console.log('Health:  http://localhost:' + PORT + '/api/health');
-  console.log('Stream:  http://localhost:' + PORT + '/api/stream');
+  console.log('🚀 SENTINEL v2.0 — PolicyGuard AI backend active');
+  console.log('🔗 Endpoint: http://localhost:' + PORT + '/api/policy/chat');
+  console.log('🩺 Health:   http://localhost:' + PORT + '/api/health');
 });

@@ -24,7 +24,7 @@ function createWindow() {
     alwaysOnTop: true,
     hasShadow: false,
     skipTaskbar: true,
-    resizable: true, // Allow resizing at runtime
+    resizable: false, // User requested static size
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
@@ -108,16 +108,7 @@ ipcMain.on('window-move', (event, { x, y }) => {
   }
 });
 
-// IPC Handler for resizing the window
-ipcMain.on('window-resize', (event, { width, height }) => {
-  if (mainWindow) {
-    const size = mainWindow.getSize();
-    // Enforce a minimum size
-    const newWidth = Math.max(200, Math.round(size[0] + width));
-    const newHeight = Math.max(200, Math.round(size[1] + height));
-    mainWindow.setSize(newWidth, newHeight);
-  }
-});
+// IPC Handler for resizing the window removed as requested.
 
 // IPC Handler to decrypt and write a temporary model file
 ipcMain.handle('get-decrypted-model', async () => {
