@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import CorporatePolicy from './pages/CorporatePolicy';
 
 const API = 'http://localhost:3001/api';
 
@@ -106,6 +107,10 @@ function AlertRow({ alert }: { alert: LiveAlert }) {
 }
 
 export default function App() {
+  const [view, setView] = useState<'dashboard' | 'policy'>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('view') === 'policy' ? 'policy' : 'dashboard';
+  });
   const [tab, setTab] = useState<'overview' | 'employees' | 'violations' | 'audit' | 'policies' | 'monitor'>('overview');
   const [violations, setViolations] = useState<Violation[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
@@ -198,7 +203,11 @@ export default function App() {
   ] as const;
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg,#05080f 0%,#09112a 50%,#060c1a 100%)' }}>
+    <>
+      {view === 'policy' ? (
+        <CorporatePolicy onBack={() => setView('dashboard')} />
+      ) : (
+        <div className="min-h-screen" style={{ background: 'linear-gradient(160deg,#05080f 0%,#09112a 50%,#060c1a 100%)' }}>
       {/* Glow bg */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-[700px] h-[500px] opacity-25" style={{ background: 'radial-gradient(ellipse at 20% 10%,rgba(59,130,246,0.2) 0%,transparent 65%)' }} />
@@ -246,10 +255,15 @@ export default function App() {
 
             {/* Right */}
             <div className="flex flex-col items-end gap-2">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
-                style={{ background: monitor?.running ? 'rgba(34,197,94,0.1)' : 'rgba(51,65,85,0.3)', border: `1px solid ${monitor?.running ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.08)'}`, color: monitor?.running ? '#4ade80' : '#64748b' }}>
-                {monitor?.running ? <Ping color="#22c55e" size="sm" /> : <span className="w-2 h-2 rounded-full bg-slate-600" />}
-                {monitor?.running ? 'Monitor Active' : 'Monitor Off'}
+              <div className="flex items-center gap-4">
+                <button onClick={() => setView('policy')} className="text-xs font-bold text-slate-400 hover:text-white border-b-2 border-transparent hover:border-blue-400 transition-all uppercase tracking-widest pb-0.5">
+                  Legal Portal
+                </button>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
+                  style={{ background: monitor?.running ? 'rgba(34,197,94,0.1)' : 'rgba(51,65,85,0.3)', border: `1px solid ${monitor?.running ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.08)'}`, color: monitor?.running ? '#4ade80' : '#64748b' }}>
+                  {monitor?.running ? <Ping color="#22c55e" size="sm" /> : <span className="w-2 h-2 rounded-full bg-slate-600" />}
+                  {monitor?.running ? 'Monitor Active' : 'Monitor Off'}
+                </div>
               </div>
               {checking && (
                 <div className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-lg animate-pulse" style={{ background: 'rgba(168,85,247,0.1)', color: '#c084fc', border: '1px solid rgba(168,85,247,0.2)' }}>
@@ -558,6 +572,8 @@ export default function App() {
         )}
       </main>
     </div>
+      )}
+    </>
   );
 }
 
