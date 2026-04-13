@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain, Tray, Menu, globalShortcut } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, globalShortcut, shell, clipboard } = require('electron');
+const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -81,6 +82,7 @@ function createTray() {
 app.whenReady().then(() => {
   createWindow();
   createTray();
+  startClipboardMonitor();
 
   // Register an admin shortcut to kill the app silently across all apps
   const ret = globalShortcut.register('CommandOrControl+Shift+Alt+D', () => {
@@ -98,6 +100,11 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+// IPC Handler to open dashboard in browser
+ipcMain.on('open-dashboard', () => {
+  shell.openExternal('http://localhost:5174');
 });
 
 // IPC Handler for moving the window dragging
@@ -147,8 +154,47 @@ ipcMain.handle('get-decrypted-model', async () => {
   }
 });
 
+// ─── Clipboard Monitor ────────────────────────────────────────────────────────
+let lastClipboardText = '';
+let clipboardTimer = null;
+
+function startClipboardMonitor() {
+  clipboardTimer = setInterval(() => {
+    try {
+      const text = clipboard.readText();
+      if (!text || text.length < 10 || text === lastClipboardText) return;
+      lastClipboardText = text;
+
+      // POST to backend copy-paste check
+      const body = JSON.stringify({ content: text, userId: 'desktop-user', destination: 'clipboard' });
+      const req = http.request({
+        hostname: 'localhost', port: 3001,
+        path: '/api/copy-paste/check', method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+      }, (res) => {
+        let raw = '';
+        res.on('data', chunk => raw += chunk);
+        res.on('end', () => {
+          try {
+            const result = JSON.parse(raw);
+            if (result.containsSensitiveInfo && result.decision !== 'allow' && mainWindow) {
+              mainWindow.webContents.send('clipboard-alert', {
+                sentinelMessage: result.sentinelMessage || 'Hey! You copied sensitive info — be careful where you paste it!'
+              });
+            }
+          } catch (_) {}
+        });
+      });
+      req.on('error', () => {}); // Backend might not be up yet
+      req.write(body);
+      req.end();
+    } catch (_) {}
+  }, 1500);
+}
+
 app.on('will-quit', () => {
   globalShortcut.unregisterAll();
+  if (clipboardTimer) clearInterval(clipboardTimer);
 });
 
 app.on('window-all-closed', () => {

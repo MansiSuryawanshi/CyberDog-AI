@@ -9,6 +9,9 @@ let speechContainer = null;
 let hideTimer = null;
 let eventSource = null;
 
+// Messages that are just informational (auto-hide after short time)
+const AUTO_HIDE_MESSAGES = ['wait... i am checking', 'woof! i am online'];
+
 export function showMessage(message, durationMs = 5000, persist = false) {
   if (!speechBubble) return;
   if (hideTimer) clearTimeout(hideTimer);
@@ -16,7 +19,11 @@ export function showMessage(message, durationMs = 5000, persist = false) {
   const isDanger = message.toLowerCase().includes('danger') ||
                    message.toLowerCase().includes('phishing') ||
                    message.toLowerCase().includes('do not click') ||
-                   message.toLowerCase().includes('warning');
+                   message.toLowerCase().includes('warning') ||
+                   message.toLowerCase().includes('sensitive') ||
+                   message.toLowerCase().includes('copied');
+
+  const isAutoHide = AUTO_HIDE_MESSAGES.some(t => message.toLowerCase().startsWith(t));
 
   speechText.textContent = message;
   speechBubble.classList.toggle('danger', isDanger);
@@ -24,8 +31,8 @@ export function showMessage(message, durationMs = 5000, persist = false) {
   speechBubble.classList.remove('hidden');
   setTimeout(() => speechBubble.classList.add('visible'), 10);
 
-  // Danger messages stay until user clicks X; safe messages auto-hide
-  if (!persist && !isDanger) {
+  // Only auto-hide "checking" / greeting messages — everything else stays until X
+  if (isAutoHide) {
     hideTimer = setTimeout(() => {
       speechBubble.classList.remove('visible');
       speechBubble.classList.add('hidden');
@@ -90,7 +97,7 @@ function connectSSE() {
 
   // Dog says "checking" before analysis result arrives
   eventSource.addEventListener('screen_checking', () => {
-    showMessage('Wait... I am checking your screen right now.', 3000);
+    showMessage('Wait... I am checking your screen right now.', 6000);
   });
 
   // General threat on screen
@@ -129,4 +136,11 @@ export function setupSpeechSystem() {
   speechText = document.getElementById('speech-text');
   speechContainer = document.getElementById('speech-container');
   connectSSE();
+
+  // Clipboard alerts from Electron main process (direct IPC — faster than SSE)
+  if (window.electronAPI && window.electronAPI.onClipboardAlert) {
+    window.electronAPI.onClipboardAlert((data) => {
+      showMessage(data.sentinelMessage || 'Hey! Sensitive info detected in clipboard. Be careful!');
+    });
+  }
 }

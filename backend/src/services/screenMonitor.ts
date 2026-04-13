@@ -61,7 +61,10 @@ async function captureAndAnalyze(): Promise<void> {
     const appChanged = analysis.activeApp !== state.lastActiveApp;
     const cooldownPassed = (now - state.lastAlertAt) > ALERT_COOLDOWN_MS;
 
-    // Update tracking state
+    // Update tracking state — reset dedup when app or page changes so dog always reacts to new context
+    if (analysis.activeApp !== state.lastActiveApp || (screenChanged && appChanged)) {
+      state.lastSentinelMessage = ''; // Force fresh message on context switch
+    }
     state.lastActiveApp = analysis.activeApp;
 
     // Send dog message only if sentinel message changed (prevents infinite loop when dashboard is on screen)
