@@ -112,8 +112,8 @@ export function setupActionMenu() {
     });
 
     policyBtn.addEventListener('click', () => {
-        // Redirect to the React Policy Portal (usually port 5173 in dev)
-        window.open('http://localhost:5173', '_blank', 'width=1200,height=900');
+        // Redirect to the static Policy Handbook (served by Vite)
+        window.open('http://localhost:5174/policy.html', '_blank', 'width=1200,height=900');
     });
 
     // Special behavior: If they hover the app (robot context), expand the menu. 

@@ -111,7 +111,7 @@ export async function generateAssistantResponse(message: string, history: ChatMe
     console.log(`✅ [Sentinel AI] Claude responded successfully.`);
 
     return {
-      text: replyText,
+      text: `[SENTINEL-v2-AI]\n\n${replyText}`,
       type: context ? 'policy' : 'escalation',
       topic: topic
     };

@@ -176,7 +176,6 @@ export default function CorporatePolicy({ onBack }: CorporatePolicyProps) {
                 <div className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px]">
                   Verifiably Secure <br/> Through Local Execution
                 </div>
-              </div>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
