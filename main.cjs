@@ -25,7 +25,7 @@ function createWindow() {
     alwaysOnTop: true,
     hasShadow: false,
     skipTaskbar: true,
-    resizable: true, // Allow resizing at runtime
+    resizable: false, // User requested static size
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
@@ -33,11 +33,11 @@ function createWindow() {
     }
   });
 
-  // Check if we are in dev mode (Vite typically runs on 5173)
+  // Check if we are in dev mode (Vite typically runs on 5174)
   const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
   if (isDev) {
-    // We expect Vite to be running
-    mainWindow.loadURL('http://localhost:5173');
+    // We expect Vite to be running (on port 5174)
+    mainWindow.loadURL('http://localhost:5174');
     // Open DevTools in a detached window so it doesn't break transparency
     // mainWindow.webContents.openDevTools({ mode: 'detach' });
   } else {
@@ -115,16 +115,7 @@ ipcMain.on('window-move', (event, { x, y }) => {
   }
 });
 
-// IPC Handler for resizing the window
-ipcMain.on('window-resize', (event, { width, height }) => {
-  if (mainWindow) {
-    const size = mainWindow.getSize();
-    // Enforce a minimum size
-    const newWidth = Math.max(200, Math.round(size[0] + width));
-    const newHeight = Math.max(200, Math.round(size[1] + height));
-    mainWindow.setSize(newWidth, newHeight);
-  }
-});
+// IPC Handler for resizing the window removed as requested.
 
 // IPC Handler to decrypt and write a temporary model file
 ipcMain.handle('get-decrypted-model', async () => {

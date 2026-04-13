@@ -17,8 +17,11 @@ import {
   Download,
   ExternalLink,
   Info,
-  AlertCircle
+  AlertCircle,
+  MessageSquare,
+  Sparkles
 } from 'lucide-react';
+import PolicyAssistantChat from '../components/PolicyAssistantChat';
 
 interface CorporatePolicyProps {
   onBack: () => void;
@@ -49,6 +52,7 @@ const FadeInWhenVisible = ({ children, delay = 0 }: { children: React.ReactNode;
 
 export default function CorporatePolicy({ onBack }: CorporatePolicyProps) {
   const [activeSection, setActiveSection] = useState('privacy');
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -169,14 +173,25 @@ export default function CorporatePolicy({ onBack }: CorporatePolicyProps) {
                 CyberDog AI adheres to the world’s most stringent security frameworks to ensure your enterprise data remains resilient, private, and fully auditable.
               </p>
               
-              <div className="flex flex-wrap gap-8 items-center border-t border-white/10 pt-10">
-                <div className="flex -space-x-12 opacity-80 hover:opacity-100 transition-opacity">
-                   <img src="/images/compliance_badges.png" alt="Compliance Badges" className="h-24 object-contain filter drop-shadow-[0_0_20px_rgba(59,130,246,0.3)]" />
-                </div>
                 <div className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px]">
                   Verifiably Secure <br/> Through Local Execution
                 </div>
-              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsChatOpen(true)}
+                className="mt-12 flex items-center gap-4 px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_20px_40px_rgba(37,99,235,0.3)] group transition-all"
+              >
+                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-left">
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-70">New Policy Assistant</p>
+                  <p className="text-lg font-black italic tracking-tighter">Ask Sentinel Anything</p>
+                </div>
+                <ChevronRight className="w-5 h-5 ml-4 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
             </motion.div>
 
             <motion.div
@@ -506,6 +521,35 @@ export default function CorporatePolicy({ onBack }: CorporatePolicyProps) {
           </div>
         </div>
       </footer>
+
+      {/* ── POLICY ASSISTANT CHAT ────────────────────────────────────────────── */}
+      <div className="fixed bottom-10 right-10 z-[100] flex flex-col items-end gap-6">
+        <AnimatePresence>
+          {isChatOpen && (
+            <PolicyAssistantChat onClose={() => setIsChatOpen(false)} />
+          )}
+        </AnimatePresence>
+
+        <motion.button
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-2xl transition-all ${
+            isChatOpen ? 'bg-white text-slate-900 rotate-90' : 'bg-blue-600 text-white'
+          }`}
+        >
+          {isChatOpen ? <X className="w-8 h-8" /> : <MessageSquare className="w-8 h-8" />}
+          {!isChatOpen && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="absolute -top-2 -right-2 px-2 py-1 rounded-md bg-emerald-500 text-[10px] font-black text-white"
+            >
+              AI ONLINE
+            </motion.div>
+          )}
+        </motion.button>
+      </div>
     </div>
   );
 }
