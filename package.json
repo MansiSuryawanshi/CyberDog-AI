@@ -5,7 +5,7 @@
   "type": "module",
   "main": "main.cjs",
   "scripts": {
-    "dev": "concurrently \"vite\" \"wait-on http://localhost:5174 && electron .\"",
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "build": "vite build && electron-builder",
     "preview": "vite preview"
   },

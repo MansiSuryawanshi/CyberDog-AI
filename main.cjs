@@ -37,7 +37,7 @@ function createWindow() {
   const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
   if (isDev) {
     // We expect Vite to be running (on port 5174)
-    mainWindow.loadURL('http://localhost:5174');
+    mainWindow.loadURL('http://localhost:5173');
     // Open DevTools in a detached window so it doesn't break transparency
     // mainWindow.webContents.openDevTools({ mode: 'detach' });
   } else {
